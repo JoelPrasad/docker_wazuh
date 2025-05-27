@@ -23,7 +23,7 @@ services:
       - "514:514/udp"
       - "55000:55000"
     environment:
-      - INDEXER_URL=https://wazuh-indexer:9200
+      - INDEXER_URL=https://wazuh.indexer:9200
       - INDEXER_USERNAME=admin
       - INDEXER_PASSWORD=SecretPassword
       - FILEBEAT_SSL_VERIFICATION_MODE=full
@@ -62,7 +62,7 @@ services:
         aliases:
           - wazuh.manager
     depends_on:
-      - wazuh-indexer
+      - wazuh.indexer
 
   wazuh-indexer:
     image: wazuh/wazuh-indexer:4.12.0
@@ -88,9 +88,9 @@ services:
       - source: root_ca_cert_indexer
         target: /usr/share/wazuh-indexer/certs/root-ca.pem
       - source: wazuh_indexer_key
-        target: /usr/share/wazuh-indexer/certs/wazuh-indexer.key
+        target: /usr/share/wazuh-indexer/certs/wazuh.indexer.key
       - source: wazuh_indexer_cert
-        target: /usr/share/wazuh-indexer/certs/wazuh-indexer.pem
+        target: /usr/share/wazuh-indexer/certs/wazuh.indexer.pem
       - source: admin_cert
         target: /usr/share/wazuh-indexer/certs/admin.pem
       - source: admin_key
@@ -122,7 +122,7 @@ services:
     environment:
       - INDEXER_USERNAME=admin
       - INDEXER_PASSWORD=SecretPassword
-      - WAZUH_API_URL=https://wazuh-manager
+      - WAZUH_API_URL=https://wazuh.manager
       - DASHBOARD_USERNAME=kibanaserver
       - DASHBOARD_PASSWORD=kibanaserver
       - API_USERNAME=wazuh-wui
@@ -142,8 +142,8 @@ services:
       - wazuh-dashboard-config:/usr/share/wazuh-dashboard/data/wazuh/config
       - wazuh-dashboard-custom:/usr/share/wazuh-dashboard/plugins/wazuh/public/assets/custom
     depends_on:
-      - wazuh-indexer
-      - wazuh-manager
+      - wazuh.indexer
+      - wazuh.manager
     networks:
       wazuh_net:
         aliases:
